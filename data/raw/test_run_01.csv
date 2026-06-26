@@ -1,0 +1,2 @@
+dt,ax_raw,ay_raw,az_raw,gx_raw,gy_raw,gz_raw,ax_g,ay_g,az_g,gyroX_dps,gyroY_dps,gyroZ_dps,roll_deg,pitch_deg,yaw_deg
+0.9728,-928,-184,16044,-511,307,-101,-0.057,-0.011,0.979,-3.90,2.34,-0.77,-0.66,3.31,-129.13
