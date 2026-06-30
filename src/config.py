@@ -1,27 +1,61 @@
-import os
+from __future__ import annotations
+from dataclasses import dataclass
 from pathlib import Path
 
-# We determine the project's root folder (go up one level from the src folder)
-BASE_DIR = Path(__file__).resolve().parent.parent
+@dataclass(frozen=True)
+class SimConfig:
+    dt              : float = 0.01
+    duration        : float = 3.0
+    initial_pitch   : float = 25.0
+    setpoint        : float = 0.0
+    stable_zone_deg : float = 2.0
+    crash_threshold : float = 90.0
+    inertia         : float = 0.25
+    damping         : float = 0.15
+    power_gain      : float = 0.80
+    saturation      : float = 2000.0
+    integral_limit  : float = 10.0
 
-# Paths to data folders
-RAW_DATA_DIR = os.path.join(BASE_DIR, "data", "raw")
-PROCESSED_DATA_DIR = os.path.join(BASE_DIR, "data", "processed")
-REPORTS_DIR = os.path.join(BASE_DIR, "reports", "figures")
+@dataclass(frozen=True)
+class GAConfig:
+    population_size : int   = 30
+    generations     : int   = 15
+    elite_count     : int   = 3
+    tournament_size : int   = 3
+    crossover_rate  : float = 0.80
+    mutation_rate   : float = 0.20
+    mutation_sigma  : float = 0.30
+    mutation_boost  : float = 1.5
+    diversity_threshold: float = 0.15
+    patience        : int   = 5
+    min_delta       : float = 0.001
+    seed            : int   = 42
 
-# Path to the database SQLite
-DB_PATH = os.path.join(PROCESSED_DATA_DIR, "experiments.db")
+    @property
+    def bounds(self) -> dict:
+        return {"kp": (0.0, 10.0), "ki": (0.0, 5.0), "kd": (0.0, 5.0)}
 
-# Drone telemetry settings (column names in CSV files)
+@dataclass(frozen=True)
+class FitnessWeights:
+    iae             : float = 0.40
+    overshoot       : float = 0.25
+    settling_time   : float = 0.20
+    control_effort  : float = 0.10
+    crash_penalty   : float = 1.00
+
+SIM_CFG     = SimConfig()
+GA_CFG      = GAConfig()
+FIT_WEIGHTS = FitnessWeights()
+
+# ─────────────────────────────────────────────
+# Paths & Schema (Used by telemetry.py)
+# ─────────────────────────────────────────────
+RAW_DATA_DIR      = Path(__file__).parent.parent / "data" / "raw"
 TELEMETRY_COLUMNS = [
-    "dt", "ax_raw", "ay_raw", "az_raw", 
-    "gx_raw", "gy_raw", "gz_raw", 
-    "ax_g", "ay_g", "az_g", 
-    "gyroX_dps", "gyroY_dps", "gyroZ_dps", 
-    "roll_deg", "pitch_deg", "yaw_deg"
+    "dt",
+    "pitch_deg",
+    "gyroY_dps",
+    "ax_g",
+    "ay_g",
+    "az_g",
 ]
-
-# We create folders if they don’t exist on the disk yet
-os.makedirs(RAW_DATA_DIR, exist_ok=True)
-os.makedirs(PROCESSED_DATA_DIR, exist_ok=True)
-os.makedirs(REPORTS_DIR, exist_ok=True)

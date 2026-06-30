@@ -1,5 +1,8 @@
-pandas
-numpy
-plotly
-scikit-opt
-jupyter
+numpy>=2.0.0
+pandas>=2.2.0
+scipy>=1.13.0
+scikit-opt>=0.6.0 # Benchmark
+scikit-optimize>=0.10.0
+matplotlib>=3.9.0
+plotly>=5.22.0
+jupyter>=1.0.0

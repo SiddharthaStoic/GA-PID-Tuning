@@ -1,1 +1,11 @@
-C:\Users\Gidroid\Desktop\AI_proj\src\__pycache__
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.vscode/
+
+data/processed/*.db
+reports/figures/*.png
+
+.venv/
+venv/
+env/
