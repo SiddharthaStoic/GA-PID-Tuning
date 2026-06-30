@@ -4,7 +4,6 @@ __pycache__/
 .vscode/
 
 data/processed/*.db
-reports/figures/*.png
 
 .venv/
 venv/
